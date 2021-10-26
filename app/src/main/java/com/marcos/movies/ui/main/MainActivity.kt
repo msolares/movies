@@ -1,22 +1,19 @@
 package com.marcos.movies.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import com.antonioleiva.mymovies.ui.common.CoroutineScopeActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.marcos.movies.databinding.ActivityMainBinding
+import com.marcos.movies.models.Movie
 import com.marcos.movies.models.MoviesRepository
 import com.marcos.movies.ui.common.startActivity
 import com.marcos.movies.ui.detail.DetailActivity
-import kotlinx.coroutines.launch
 
-class MainActivity : CoroutineScopeActivity() {
-    private val moviesRepository: MoviesRepository by lazy { MoviesRepository(this) }
+class MainActivity : AppCompatActivity(), MainPresenter.View {
+
+    private val mainPresenter by lazy { MainPresenter(MoviesRepository(this))}
 
     private val adapter = MoviesAdapter {
-        startActivity<DetailActivity> {
-            putExtra(com.marcos.movies.ui.detail.DetailActivity.MOVIE, it)
-        }
+        mainPresenter.onMovieClicked(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,10 +21,32 @@ class MainActivity : CoroutineScopeActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mainPresenter.onCreate(this)
         binding.recycler.adapter = adapter
 
-        launch {
-            adapter.movies = moviesRepository.findPopularMovies().results
-        }
+
+    }
+
+    override fun onDestroy() {
+        mainPresenter.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun showProgress() {
+        TODO("Not yet implemented")
+    }
+
+    override fun hideProgress() {
+        TODO("Not yet implemented")
+    }
+
+    override fun updateData(movies: List<Movie>) {
+        adapter.movies = movies
+    }
+
+    override fun navigateTo(movie: Movie) {
+       startActivity<DetailActivity>{
+           putExtra(DetailActivity.MOVIE, movie)
+       }
     }
 }
