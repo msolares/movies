@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.antonioleiva.mymovies.PermissionRequester
 import com.marcos.movies.databinding.ActivityMainBinding
 import com.marcos.movies.model.server.MoviesRepository
+import com.marcos.movies.ui.common.app
 import com.marcos.movies.ui.common.getViewModel
 import com.marcos.movies.ui.common.startActivity
 import com.marcos.movies.ui.detail.DetailActivity
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = getViewModel { MainViewModel(MoviesRepository(application)) }
+        viewModel = getViewModel { MainViewModel(MoviesRepository(app)) }
 
 
 
@@ -47,9 +48,9 @@ class MainActivity : AppCompatActivity() {
 //        progress.visibility == if (model == MainViewModel.UiModel.Loading) View.VISIBLE else View.GONE
         when (model){
             is MainViewModel.UiModel.Content -> adapter.movies = model.movie
-//            MainViewModel.UiModel.RequestLocationPermission -> coarsePermissionRequester.request {
-//                viewModel.coarsePermissionRequester
-//            }
+            MainViewModel.UiModel.RequestLocationPermission -> coarsePermissionRequester.request {
+                viewModel.onCoarsePermissionRequested()
+            }
         }
     }
 

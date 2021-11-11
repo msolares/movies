@@ -14,7 +14,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
 
     sealed class UiModel{
         object Loading : UiModel()
-        class  Content (val movie: List<Movie>): UiModel()
+        class  Content(val movie: List<com.antonioleiva.mymovies.model.database.Movie>): UiModel()
         object RequestLocationPermission : UiModel()
     }
 
@@ -39,9 +39,11 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
         }
     }
 
-    suspend fun onCoarsePermissionRequest(){
-        _model.value = UiModel.Loading
-        _model.value = UiModel.Content(moviesRepository.findPopularMovies().results)
+    fun onCoarsePermissionRequested() {
+        launch {
+            _model.value = UiModel.Loading
+            _model.value = UiModel.Content(moviesRepository.findPopularMovies())
+        }
     }
 
     fun onMovieClicked(movie: Movie){
