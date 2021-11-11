@@ -1,14 +1,14 @@
-package com.marcos.movies.models
+package com.marcos.movies.model.server
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class MovieDbResult(
-    val page: Int,
-    val results: List<Movie>,
-    @SerializedName("total_pages") val totalPages: Int,
-    @SerializedName("total_results") val totalResults: Int
+        val page: Int,
+        val results: List<Movie>,
+        @SerializedName("total_pages") val totalPages: Int,
+        @SerializedName("total_results") val totalResults: Int
 )
 
 @Parcelize

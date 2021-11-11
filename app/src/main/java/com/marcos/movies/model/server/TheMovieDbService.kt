@@ -1,5 +1,6 @@
-package com.marcos.movies.models
+package com.marcos.movies.model.server
 
+import com.marcos.movies.model.server.MovieDbResult
 import retrofit2.http.GET
 import retrofit2.http.Query
 

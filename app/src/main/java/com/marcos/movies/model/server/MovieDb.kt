@@ -1,4 +1,4 @@
-package com.marcos.movies.models
+package com.marcos.movies.model.server
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +17,7 @@ object MovieDb {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .run {
-            create<TheMovieDbService>(TheMovieDbService::class.java)
+            create<TheMovieDbService>(
+                TheMovieDbService::class.java)
         }
 }

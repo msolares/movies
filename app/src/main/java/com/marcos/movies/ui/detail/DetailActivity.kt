@@ -3,36 +3,46 @@ package com.marcos.movies.ui.detail
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.marcos.movies.R
 import com.marcos.movies.databinding.ActivityDetailBinding
-import com.marcos.movies.models.Movie
-import com.marcos.movies.ui.common.Scope
+import com.marcos.movies.model.server.MoviesRepository
+import com.marcos.movies.ui.common.getViewModel
 import com.marcos.movies.ui.common.loadUrl
-import kotlinx.android.synthetic.main.activity_detail.*
+import com.marcos.movies.ui.common.app
 
-class DetailActivity : AppCompatActivity(), DetailPresenter.View {
+class DetailActivity : AppCompatActivity(){
     companion object {
         const val MOVIE = "DetailActivity:movie"
     }
 
-    private val presenter = DetailPresenter()
+    private lateinit var viewModel: DetailViewModel
+    private lateinit var binding: ActivityDetailBinding
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ActivityDetailBinding.inflate(layoutInflater).run {
-            setContentView(root)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        viewModel = getViewModel {
+            DetailViewModel(intent.getIntExtra(MOVIE, -1), MoviesRepository(app))
         }
-        val movie: Movie? = intent.getParcelableExtra(MOVIE)
-        if (movie != null) {
-            presenter.onCreate(this, movie)
-        }
+
+        viewModel.model.observe(this, Observer(::updateUi))
+
+        binding.movieDetailFavorite.setOnClickListener { viewModel.onFavoriteClicked() }
     }
 
-    override fun updateUi(movie: Movie) = with(movie){
-        movieDetailToolbar.title = title
-        movieDetailImage.loadUrl("https://image.tmdb.org/t/p/w780$backdropPath")
-        movieDetailSummary.text = overview
+    private fun updateUi(model: DetailViewModel.UiModel) = with(binding) {
+        val movie = model.movie
+        movieDetailToolbar.title = movie.title
+        movieDetailImage.loadUrl("https://image.tmdb.org/t/p/w780${movie.backdropPath}")
+        movieDetailSummary.text = movie.overview
         movieDetailInfo.setMovie(movie)
+
+        val icon = if (movie.favorite) R.drawable.ic_favorite_on else R.drawable.ic_favorite_off
+        movieDetailFavorite.setImageDrawable(ContextCompat.getDrawable(this@DetailActivity, icon))
     }
 }

@@ -1,6 +1,5 @@
 package com.marcos.movies.ui.common
 
-import com.marcos.movies.models.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

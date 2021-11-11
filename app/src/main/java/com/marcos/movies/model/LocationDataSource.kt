@@ -1,4 +1,4 @@
-package com.marcos.movies.models
+package com.marcos.movies.model
 
 import android.annotation.SuppressLint
 import android.app.Activity

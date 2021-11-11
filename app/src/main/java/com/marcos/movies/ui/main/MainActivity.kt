@@ -1,52 +1,58 @@
 package com.marcos.movies.ui.main
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.antonioleiva.mymovies.PermissionRequester
 import com.marcos.movies.databinding.ActivityMainBinding
-import com.marcos.movies.models.Movie
-import com.marcos.movies.models.MoviesRepository
+import com.marcos.movies.model.server.MoviesRepository
+import com.marcos.movies.ui.common.getViewModel
 import com.marcos.movies.ui.common.startActivity
 import com.marcos.movies.ui.detail.DetailActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MainPresenter.View {
+class MainActivity : AppCompatActivity() {
 
-    private val mainPresenter by lazy { MainPresenter(MoviesRepository(this))}
+    private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: MoviesAdapter
+    private val coarsePermissionRequester = PermissionRequester(this, ACCESS_COARSE_LOCATION)
 
-    private val adapter = MoviesAdapter {
-        mainPresenter.onMovieClicked(it)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainPresenter.onCreate(this)
-        binding.recycler.adapter = adapter
+        viewModel = getViewModel { MainViewModel(MoviesRepository(application)) }
 
+
+
+        adapter = MoviesAdapter(viewModel::onMovieClicked)
+        recycler.adapter = adapter
+
+        viewModel.model.observe(this, Observer(::updateUi))
+
+        viewModel.navigation.observe(this, Observer { event ->
+            event.getContentIfNotHandled().let {
+                startActivity<DetailActivity>{
+                    putExtra(DetailActivity.MOVIE, it)
+                }
+            }
+        })
 
     }
 
-    override fun onDestroy() {
-        mainPresenter.onDestroy()
-        super.onDestroy()
+    fun updateUi(model: MainViewModel.UiModel){
+//        progress.visibility == if (model == MainViewModel.UiModel.Loading) View.VISIBLE else View.GONE
+        when (model){
+            is MainViewModel.UiModel.Content -> adapter.movies = model.movie
+//            MainViewModel.UiModel.RequestLocationPermission -> coarsePermissionRequester.request {
+//                viewModel.coarsePermissionRequester
+//            }
+        }
     }
 
-    override fun showProgress() {
-        TODO("Not yet implemented")
-    }
 
-    override fun hideProgress() {
-        TODO("Not yet implemented")
-    }
 
-    override fun updateData(movies: List<Movie>) {
-        adapter.movies = movies
-    }
-
-    override fun navigateTo(movie: Movie) {
-       startActivity<DetailActivity>{
-           putExtra(DetailActivity.MOVIE, movie)
-       }
-    }
 }
