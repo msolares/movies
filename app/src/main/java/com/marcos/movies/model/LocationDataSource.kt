@@ -8,18 +8,20 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 abstract class LocationDataSource {
-    abstract suspend fun findLastLocation(): Location?
+    abstract suspend fun findLastRegion(): String?
 }
 
-class PlayServicesLocationDataSource(activity: Activity) : LocationDataSource() {
-    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
 
-    @SuppressLint("MissingPermission")
-    override suspend fun findLastLocation(): Location? =
-        suspendCancellableCoroutine { continuation ->
-            fusedLocationClient.lastLocation
-                .addOnCompleteListener {
-                    continuation.resume(it.result)
-                }
-        }
-}
+
+//class PlayServicesLocationDataSource(activity: Activity) : LocationDataSource() {
+//    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+//
+//    @SuppressLint("MissingPermission")
+//    override suspend fun findLastLocation(): Location? =
+//        suspendCancellableCoroutine { continuation ->
+//            fusedLocationClient.lastLocation
+//                .addOnCompleteListener {
+//                    continuation.resume(it.result)
+//                }
+//        }
+//}

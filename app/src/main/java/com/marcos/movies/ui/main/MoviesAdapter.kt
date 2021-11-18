@@ -3,9 +3,9 @@ package com.marcos.movies.ui.main
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.marcos.domain.Movie
 import com.marcos.movies.R
 import com.marcos.movies.databinding.ItemMovieBinding
-import com.marcos.movies.model.server.Movie
 import com.marcos.movies.ui.common.basicDiffUtil
 import com.marcos.movies.ui.common.inflate
 import com.marcos.movies.ui.common.loadUrl

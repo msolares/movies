@@ -5,12 +5,17 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.antonioleiva.mymovies.PermissionRequester
+import com.marcos.data.repository.MoviesRepository
+import com.marcos.data.repository.RegionRepository
+import com.marcos.movies.R
 import com.marcos.movies.databinding.ActivityMainBinding
-import com.marcos.movies.model.server.MoviesRepository
+import com.marcos.movies.model.PlayServicesLocationDataSource
+import com.marcos.movies.model.database.RoomDataSource
 import com.marcos.movies.ui.common.app
 import com.marcos.movies.ui.common.getViewModel
 import com.marcos.movies.ui.common.startActivity
 import com.marcos.movies.ui.detail.DetailActivity
+import com.marcos.usescases.GetPopularMovies
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +30,20 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = getViewModel { MainViewModel(MoviesRepository(app)) }
+        viewModel = getViewModel {
+            val localDataSource = RoomDataSource(app.db)
+            MainViewModel(GetPopularMovies(
+                MoviesRepository(
+                    RoomDataSource(app.db),
+                    TheMovieDbDataSource(),
+                    RegionRepository(
+                        PlayServicesLocationDataSource(app),
+                        AndroidPermissionChecker(app)
+                    ),
+                    R.string.api_key
+                )
+            )
+        }
 
 
 

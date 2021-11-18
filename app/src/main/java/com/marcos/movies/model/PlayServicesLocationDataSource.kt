@@ -1,0 +1,31 @@
+package com.marcos.movies.model
+
+import android.annotation.SuppressLint
+import android.app.Application
+import android.location.Geocoder
+import android.location.Location
+import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
+
+class PlayServicesLocationDataSource(application: Application): LocationDataSource() {
+
+    private val geoCoder = Geocoder(application)
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
+
+    @SuppressLint("MissingPermission")
+    override suspend fun findLastRegion(): String? =
+        suspendCancellableCoroutine {continuation ->
+            fusedLocationClient.lastLocation
+                    .addOnCompleteListener {
+                        continuation.resume(it.result.toRegion())
+                    }
+        }
+
+    private fun Location?.toRegion(): String?{
+        val address = this?.let {
+            geoCoder.getFromLocation(latitude, longitude, 1)
+        }
+        return address?.firstOrNull()?.countryCode
+    }
+}

@@ -1,20 +1,20 @@
 package com.marcos.movies.ui.main
 
 import androidx.lifecycle.*
-import com.marcos.movies.model.server.Movie
-import com.marcos.movies.model.server.MoviesRepository
+import com.marcos.domain.Movie
 import com.marcos.movies.ui.common.Event
 import com.marcos.movies.ui.common.Scope
+import com.marcos.usescases.GetPopularMovies
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(), Scope by Scope.Impl(){
+class MainViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel(), Scope by Scope.Impl(){
 
     private val _navigation = MutableLiveData<Event<Movie>> ()
     val navigation: LiveData<Event<Movie>> = _navigation
 
     sealed class UiModel{
         object Loading : UiModel()
-        class  Content(val movie: List<com.antonioleiva.mymovies.model.database.Movie>): UiModel()
+        class  Content(val movie: List<Movie>): UiModel()
         object RequestLocationPermission : UiModel()
     }
 
@@ -42,7 +42,7 @@ class MainViewModel(private val moviesRepository: MoviesRepository) : ViewModel(
     fun onCoarsePermissionRequested() {
         launch {
             _model.value = UiModel.Loading
-            _model.value = UiModel.Content(moviesRepository.findPopularMovies())
+            _model.value = UiModel.Content(getPopularMovies.invoke())
         }
     }
 
