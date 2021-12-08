@@ -7,10 +7,9 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-abstract class LocationDataSource {
-    abstract suspend fun findLastRegion(): String?
+interface LocationDataSource {
+    suspend fun findLastRegion(): String?
 }
-
 
 
 //class PlayServicesLocationDataSource(activity: Activity) : LocationDataSource() {

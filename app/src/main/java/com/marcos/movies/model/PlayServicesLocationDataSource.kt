@@ -8,24 +8,25 @@ import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class PlayServicesLocationDataSource(application: Application): LocationDataSource() {
+class PlayServicesLocationDataSource(application: Application) : LocationDataSource,
+    com.marcos.data.source.LocationDataSource {
 
-    private val geoCoder = Geocoder(application)
+    private val geocoder = Geocoder(application)
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)
 
     @SuppressLint("MissingPermission")
     override suspend fun findLastRegion(): String? =
-        suspendCancellableCoroutine {continuation ->
+        suspendCancellableCoroutine { continuation ->
             fusedLocationClient.lastLocation
-                    .addOnCompleteListener {
-                        continuation.resume(it.result.toRegion())
-                    }
+                .addOnCompleteListener {
+                    continuation.resume(it.result.toRegion())
+                }
         }
 
-    private fun Location?.toRegion(): String?{
-        val address = this?.let {
-            geoCoder.getFromLocation(latitude, longitude, 1)
+    private fun Location?.toRegion(): String? {
+        val addresses = this?.let {
+            geocoder.getFromLocation(latitude, longitude, 1)
         }
-        return address?.firstOrNull()?.countryCode
+        return addresses?.firstOrNull()?.countryCode
     }
 }

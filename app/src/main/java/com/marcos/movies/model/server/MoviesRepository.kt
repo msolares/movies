@@ -20,7 +20,7 @@ class MoviesRepository(application: MoviesApp) {
         with(db.movieDao()) {
             if (movieCount() <= 0) {
 
-                val movies = MovieDb.service
+                val movies = TheMovieDb.service
                         .listPopularMoviesAsync(apiKey, regionRepository.findLastRegion())
                         .results
 
