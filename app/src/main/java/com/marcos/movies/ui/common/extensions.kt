@@ -1,7 +1,6 @@
 package com.marcos.movies.ui.common
 
 import android.app.Activity
-import android.app.AppComponentFactory
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -16,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.marcos.movies.ui.MoviesApp
+import com.marcos.movies.MoviesApp
 import kotlin.properties.Delegates
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = true): View =

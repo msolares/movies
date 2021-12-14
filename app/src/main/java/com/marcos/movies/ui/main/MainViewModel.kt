@@ -4,39 +4,32 @@ import androidx.lifecycle.*
 import com.marcos.domain.Movie
 import com.marcos.movies.ui.common.Event
 import com.marcos.movies.ui.common.Scope
+import com.marcos.movies.ui.common.ScopedViewModel
 import com.marcos.usescases.GetPopularMovies
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel(), Scope by Scope.Impl(){
-
-    private val _navigation = MutableLiveData<Event<Movie>> ()
-    val navigation: LiveData<Event<Movie>> = _navigation
-
-    sealed class UiModel{
-        object Loading : UiModel()
-        class  Content(val movie: List<Movie>): UiModel()
-        object RequestLocationPermission : UiModel()
-    }
-
-
+class MainViewModel(private val getPopularMovies: GetPopularMovies) : ScopedViewModel() {
 
     private val _model = MutableLiveData<UiModel>()
-    val model : LiveData<UiModel>
-            get() {
-                if (_model.value == null){
-                    refresh()
-                }
-                return _model
-            }
+    val model: LiveData<UiModel>
+        get() {
+            if (_model.value == null) refresh()
+            return _model
+        }
+
+    sealed class UiModel {
+        object Loading : UiModel()
+        class Content(val movies: List<Movie>) : UiModel()
+        class Navigation(val movie: Movie) : UiModel()
+        object RequestLocationPermission : UiModel()
+    }
 
     init {
         initScope()
     }
 
     private fun refresh() {
-        launch {
-            _model.value = UiModel.RequestLocationPermission
-        }
+        _model.value = UiModel.RequestLocationPermission
     }
 
     fun onCoarsePermissionRequested() {
@@ -46,12 +39,12 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies) : ViewModel(
         }
     }
 
-    fun onMovieClicked(movie: Movie){
-        _navigation.value = Event(movie)
+    fun onMovieClicked(movie: Movie) {
+        _model.value = UiModel.Navigation(movie)
     }
 
     override fun onCleared() {
         cancelScope()
+        super.onCleared()
     }
-
 }

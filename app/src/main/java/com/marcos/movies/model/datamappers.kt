@@ -3,7 +3,8 @@ package com.marcos.movies.model
 import com.marcos.domain.Movie
 import com.marcos.movies.model.server.Movie as ServerMovie
 
-fun Movie.toRoomMovie() : com.antonioleiva.mymovies.model.database.Movie = com.antonioleiva.mymovies.model.database.Movie(
+fun Movie.toRoomMovie() : com.marcos.movies.model.database.Movie =
+    com.marcos.movies.model.database.Movie(
         id,
         title,
         overview,
@@ -15,9 +16,9 @@ fun Movie.toRoomMovie() : com.antonioleiva.mymovies.model.database.Movie = com.a
         popularity,
         voteAverage,
         favorite
-)
+    )
 
-fun com.antonioleiva.mymovies.model.database.Movie.toDomainMovie() : Movie = Movie(
+fun com.marcos.movies.model.database.Movie.toDomainMovie() : Movie = Movie(
         id,
         title,
         overview,

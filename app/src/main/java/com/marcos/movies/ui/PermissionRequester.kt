@@ -1,4 +1,4 @@
-package com.antonioleiva.mymovies
+package com.marcos.movies.ui
 
 import android.app.Activity
 import com.karumi.dexter.Dexter

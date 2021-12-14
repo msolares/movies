@@ -1,6 +1,7 @@
-package com.antonioleiva.mymovies.model.database
+package com.marcos.movies.model.database
 
 import androidx.room.*
+import com.marcos.movies.model.database.Movie
 
 @Dao
 interface MovieDao {

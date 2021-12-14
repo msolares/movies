@@ -10,5 +10,14 @@ class TheMovieDbDataSource : RemoteDataSource {
         TheMovieDb.service
             .listPopularMoviesAsync(apiKey, region)
             .results
-            .map { it.toDomainMovie() }
+            .map { it.toDomainMovie()
+            }
+
+    override suspend fun getFindMoviesByName(
+        name: String,
+        apiKey: String,
+        region: String
+    ): List<Movie> {
+        TODO("Not yet implemented")
+    }
 }

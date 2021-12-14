@@ -1,7 +1,7 @@
 package com.marcos.movies
 
 import android.app.Application
-import com.antonioleiva.mymovies.model.database.MovieDatabase
+import com.marcos.movies.model.database.MovieDatabase
 import com.marcos.data.repository.MoviesRepository
 import com.marcos.data.repository.PermissionChecker
 import com.marcos.data.repository.RegionRepository
@@ -47,7 +47,7 @@ private val appModule = module {
 
 private val dataModule = module {
     factory { RegionRepository(get(), get()) }
-    factory { MoviesRepository(get(), get(), get(), get(named("apiKey"))) }
+    factory { MoviesRepository(get(), get(), get(named("apiKey")), get())}
 }
 
 private val scopesModule = module {

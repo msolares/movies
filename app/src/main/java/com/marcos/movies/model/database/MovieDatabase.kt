@@ -1,4 +1,4 @@
-package com.antonioleiva.mymovies.model.database
+package com.marcos.movies.model.database
 
 import android.content.Context
 import androidx.room.Database

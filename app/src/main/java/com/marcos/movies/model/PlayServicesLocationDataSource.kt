@@ -5,11 +5,11 @@ import android.app.Application
 import android.location.Geocoder
 import android.location.Location
 import com.google.android.gms.location.LocationServices
+import com.marcos.data.source.LocationDataSource
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
-class PlayServicesLocationDataSource(application: Application) : LocationDataSource,
-    com.marcos.data.source.LocationDataSource {
+class PlayServicesLocationDataSource(application: Application) : LocationDataSource {
 
     private val geocoder = Geocoder(application)
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application)

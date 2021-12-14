@@ -1,4 +1,4 @@
-package com.antonioleiva.mymovies.model.database
+package com.marcos.movies.model.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

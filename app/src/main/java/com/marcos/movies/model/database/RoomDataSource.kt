@@ -1,10 +1,10 @@
 package com.marcos.movies.model.database
 
-import com.antonioleiva.mymovies.model.database.Movie as RoomMovie
-import com.antonioleiva.mymovies.model.database.MovieDatabase
 import com.marcos.data.source.LocalDataSource
 import com.marcos.movies.model.toDomainMovie
 import com.marcos.movies.model.toRoomMovie
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import com.marcos.domain.Movie as DomainMovie
 
 class RoomDataSource(private val db: MovieDatabase):
@@ -12,13 +12,34 @@ class RoomDataSource(private val db: MovieDatabase):
 
     private val movieDao = db.movieDao()
 
-    override fun isEmpty(): Boolean = movieDao.movieCount() <= 0
+    override suspend fun isEmpty(): Boolean =
+        withContext(Dispatchers.IO) {
+            movieDao.movieCount() <= 0
+        }
 
-    override fun saveMovies(movies: List<DomainMovie>) {
-        movieDao.insertMovies(movies.map{it.toRoomMovie()})
+    override suspend fun saveMovies(movies: List<DomainMovie>) {
+        withContext(Dispatchers.IO) {
+            movieDao.insertMovies(movies.map { it.toRoomMovie() })
+        }
     }
 
-    override fun getPopularMovies(): List<DomainMovie> = movieDao.getAll().map { it.toDomainMovie() }
+    override suspend fun getPopularMovies(): List<DomainMovie> =
+        withContext(Dispatchers.IO) {
+            movieDao.getAll().map { it.toDomainMovie() }
+        }
+
+
+    override suspend fun findById(id: Int): com.marcos.domain.Movie {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun findByName(name: String): com.marcos.domain.Movie {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun update(movie: com.marcos.domain.Movie) {
+        TODO("Not yet implemented")
+    }
 }
 
 
