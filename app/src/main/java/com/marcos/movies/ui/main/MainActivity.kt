@@ -2,6 +2,7 @@ package com.marcos.movies.ui.main
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.os.Bundle
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import com.marcos.movies.ui.PermissionRequester
 import com.marcos.movies.databinding.ActivityMainBinding
@@ -10,7 +11,7 @@ import com.marcos.movies.ui.detail.DetailActivity
 import org.koin.androidx.scope.ScopeActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ScopeActivity() {
+class MainActivity : ScopeActivity(), SearchView.OnQueryTextListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MoviesAdapter
@@ -27,6 +28,25 @@ class MainActivity : ScopeActivity() {
         adapter = MoviesAdapter(viewModel::onMovieClicked)
         binding.recycler.adapter = adapter
         viewModel.model.observe(this, Observer(::updateUi))
+
+        binding.search.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return if (query != null) {
+            viewModel.onSearch(query)
+            true
+        }else
+            false
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        return if (newText != null) {
+            viewModel.onSearch(newText)
+            true
+        }else{
+            false
+        }
     }
 
     private fun updateUi(model: MainViewModel.UiModel) {
@@ -43,4 +63,6 @@ class MainActivity : ScopeActivity() {
             }
         }
     }
+
+
 }

@@ -33,7 +33,7 @@ class RoomDataSource(private val db: MovieDatabase):
         TODO("Not yet implemented")
     }
 
-    override suspend fun findByName(name: String): com.marcos.domain.Movie {
+    override suspend fun findByName(name: String): List<com.marcos.domain.Movie> {
         TODO("Not yet implemented")
     }
 

@@ -17,7 +17,5 @@ class TheMovieDbDataSource : RemoteDataSource {
         name: String,
         apiKey: String,
         region: String
-    ): List<Movie> {
-        TODO("Not yet implemented")
-    }
+    ): List<Movie> = TheMovieDb.service.listSearchMoviesAsync(apiKey, region, name).results.map { it.toDomainMovie() }
 }

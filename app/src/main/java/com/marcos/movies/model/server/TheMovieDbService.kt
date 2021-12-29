@@ -10,4 +10,11 @@ interface TheMovieDbService {
         @Query("api_key") apiKey: String,
         @Query("region") region: String
     ): MovieDbResult
+
+    @GET("/search/movie?include_adult=true")
+    suspend fun listSearchMoviesAsync(
+        @Query("api_key") apiKey: String,
+        @Query("region") region: String,
+        @Query("query") query: String
+    ): MovieDbResult
 }
