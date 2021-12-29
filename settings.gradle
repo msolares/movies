@@ -3,3 +3,6 @@ include ':usecases'
 include ':data'
 include ':app'
 rootProject.name = "Movies"
+include ':testShared'
+include ':testshared'
+include ':testShared'
