@@ -30,6 +30,7 @@ class DetailActivity : ScopeActivity() {
         setContentView(binding.root)
 
         viewModel.model.observe(this, Observer(::updateUi))
+        supportActionBar?.hide()
 
         binding.movieDetailFavorite.setOnClickListener { viewModel.onFavoriteClicked() }
     }

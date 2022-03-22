@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="2dp"
     android:foreground="?attr/selectableItemBackground">
@@ -10,9 +11,9 @@
     <ImageView
         android:id="@+id/ivMovie"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:scaleType="centerCrop"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        tools:src="@tools:sample/backgrounds/scenic"/>
 
     <TextView
         android:id="@+id/tvMovieName"

@@ -27,6 +27,7 @@ class MoviesRepository(
     }
 
     suspend fun findById(id: Int): Movie = localDataSource.findById(id)
+
     suspend fun update(movie: Movie) = localDataSource.update(movie)
 }
 

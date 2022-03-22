@@ -35,13 +35,13 @@ class RoomDataSource(private val db: MovieDatabase):
 
     override suspend fun findByName(name: String): List<DomainMovie> =
         withContext(Dispatchers.IO){
-            movieDao.getSearch(name.toString()).map {
+            movieDao.getSearch("%$name%").map {
                 it.toDomainMovie()
             }
         }
 
-    override suspend fun update(movie: com.marcos.domain.Movie) {
-        TODO("Not yet implemented")
+    override suspend fun update(movie: DomainMovie) {
+        withContext(Dispatchers.IO) { movieDao.updateMovie(movie.toRoomMovie()) }
     }
 }
 

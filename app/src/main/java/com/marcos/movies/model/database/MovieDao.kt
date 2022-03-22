@@ -9,7 +9,7 @@ interface MovieDao {
     @Query("SELECT * FROM Movie")
     fun getAll(): List<Movie>
 
-    @Query("SELECT * FROM Movie WHERE title = :name")
+    @Query("SELECT * FROM Movie WHERE title LIKE :name")
     fun getSearch(name: String): List<Movie>
 
     @Query("SELECT * FROM Movie WHERE id = :id")
