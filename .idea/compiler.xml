@@ -3,6 +3,12 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
       <module name="Movies.app" target="11" />
+<<<<<<< HEAD
+=======
+      <module name="Movies.data" target="11" />
+      <module name="Movies.testShared" target="11" />
+      <module name="Movies.usecases" target="11" />
+>>>>>>> unit_test
     </bytecodeTargetLevel>
   </component>
 </project>

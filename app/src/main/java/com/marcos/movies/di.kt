@@ -11,6 +11,7 @@ import com.marcos.data.source.RemoteDataSource
 import com.marcos.movies.model.AndroidPermissionChecker
 import com.marcos.movies.model.PlayServicesLocationDataSource
 import com.marcos.movies.model.database.RoomDataSource
+import com.marcos.movies.model.server.TheMovieDb
 import com.marcos.movies.model.server.TheMovieDbDataSource
 import com.marcos.movies.ui.detail.DetailActivity
 import com.marcos.movies.ui.detail.DetailViewModel
@@ -20,6 +21,8 @@ import com.marcos.usescases.FindMovieById
 import com.marcos.usescases.FindMovieByName
 import com.marcos.usescases.GetPopularMovies
 import com.marcos.usescases.ToggleMovieFavorite
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -41,9 +44,12 @@ private val appModule = module {
     single(named("apiKey")) { androidApplication().getString(R.string.api_key) }
     single { MovieDatabase.build(get()) }
     factory<LocalDataSource> { RoomDataSource(get()) }
-    factory<RemoteDataSource> { TheMovieDbDataSource() }
+    factory<RemoteDataSource> { TheMovieDbDataSource(get()) }
     factory<LocationDataSource> { PlayServicesLocationDataSource(get()) }
     factory<PermissionChecker> { AndroidPermissionChecker(get()) }
+    single<CoroutineDispatcher> { Dispatchers.Main }
+    single(named("baseUrl")) { "https://api.themoviedb.org/3/" }
+    single { TheMovieDb(get(named("baseUrl"))) }
 }
 
 private val dataModule = module {
@@ -59,7 +65,7 @@ private val scopesModule = module {
     }
 
     scope(named<DetailActivity>()) {
-        viewModel { (id: Int) -> DetailViewModel(id, get(), get()) }
+        viewModel { (id: Int) -> DetailViewModel(id, get(), get(), get()) }
         scoped { FindMovieById(get()) }
         scoped { ToggleMovieFavorite(get()) }
     }

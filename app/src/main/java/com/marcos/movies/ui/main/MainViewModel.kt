@@ -2,14 +2,14 @@ package com.marcos.movies.ui.main
 
 import androidx.lifecycle.*
 import com.marcos.domain.Movie
-import com.marcos.movies.ui.common.Event
-import com.marcos.movies.ui.common.Scope
 import com.marcos.movies.ui.common.ScopedViewModel
 import com.marcos.usescases.FindMovieByName
 import com.marcos.usescases.GetPopularMovies
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val getPopularMovies: GetPopularMovies, private val findMoviesByName: FindMovieByName) : ScopedViewModel() {
+class MainViewModel(private val getPopularMovies: GetPopularMovies, private val findMoviesByName: FindMovieByName, uiDispatcher: CoroutineDispatcher) : ScopedViewModel(uiDispatcher) {
+
 
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
@@ -51,7 +51,7 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies, private val 
     }
 
     override fun onCleared() {
-        cancelScope()
+        destroyScope()
         super.onCleared()
     }
 }
