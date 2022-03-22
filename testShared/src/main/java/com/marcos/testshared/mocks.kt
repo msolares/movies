@@ -1,4 +1,4 @@
 package com.marcos.testshared
 
-class MyClass {
+class `mocks.kt` {
 }
