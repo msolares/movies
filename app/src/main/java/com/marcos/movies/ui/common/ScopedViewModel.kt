@@ -2,8 +2,9 @@ package com.marcos.movies.ui.common
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 
-abstract class ScopedViewModel : ViewModel(), Scope by Scope.Impl() {
+abstract class ScopedViewModel(uiDispatcher: CoroutineDispatcher) : ViewModel(), Scope by Scope.Impl(uiDispatcher) {
 
     init {
         initScope()
@@ -11,7 +12,7 @@ abstract class ScopedViewModel : ViewModel(), Scope by Scope.Impl() {
 
     @CallSuper
     override fun onCleared() {
-        cancelScope()
+        destroyScope()
         super.onCleared()
     }
 }

@@ -2,6 +2,7 @@ package com.marcos.data.repository
 
 import com.marcos.data.source.LocalDataSource
 import com.marcos.data.source.RemoteDataSource
+import com.marcos.testshared.mockedMovie
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -12,8 +13,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import com.marcos.testshared.MyClass
-
 
 
 @RunWith(MockitoJUnitRunner::class)
