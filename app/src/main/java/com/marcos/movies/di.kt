@@ -59,7 +59,7 @@ private val dataModule = module {
 
 private val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         scoped { GetPopularMovies(get()) }
         scoped { FindMovieByName(get()) }
     }
