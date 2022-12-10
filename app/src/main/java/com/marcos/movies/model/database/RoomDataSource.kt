@@ -28,6 +28,11 @@ class RoomDataSource(private val db: MovieDatabase):
             movieDao.getAll().map { it.toDomainMovie() }
         }
 
+    override suspend fun getFavoritesMovies(): List<com.marcos.domain.Movie> =
+        withContext(Dispatchers.IO){
+            movieDao.getFavorites().map { it.toDomainMovie() }
+        }
+
 
     override suspend fun findById(id: Int): com.marcos.domain.Movie = withContext(Dispatchers.IO) {
         movieDao.findById(id).toDomainMovie()

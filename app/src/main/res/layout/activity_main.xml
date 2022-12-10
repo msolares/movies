@@ -22,4 +22,13 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/movieMainFavorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_favorite_off"
+        app:layout_anchorGravity="bottom|end"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

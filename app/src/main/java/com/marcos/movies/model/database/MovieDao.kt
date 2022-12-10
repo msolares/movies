@@ -15,6 +15,9 @@ interface MovieDao {
     @Query("SELECT * FROM Movie WHERE id = :id")
     fun findById(id: Int): Movie
 
+    @Query("SELECT * FROM Movie WHERE favorite = 1")
+    fun getFavorites(): List<Movie>
+
     @Query("SELECT COUNT(id) FROM Movie")
     fun movieCount(): Int
 

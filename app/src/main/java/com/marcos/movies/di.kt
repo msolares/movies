@@ -17,10 +17,7 @@ import com.marcos.movies.ui.detail.DetailActivity
 import com.marcos.movies.ui.detail.DetailViewModel
 import com.marcos.movies.ui.main.MainActivity
 import com.marcos.movies.ui.main.MainViewModel
-import com.marcos.usescases.FindMovieById
-import com.marcos.usescases.FindMovieByName
-import com.marcos.usescases.GetPopularMovies
-import com.marcos.usescases.ToggleMovieFavorite
+import com.marcos.usescases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
@@ -59,9 +56,10 @@ private val dataModule = module {
 
 private val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
         scoped { GetPopularMovies(get()) }
         scoped { FindMovieByName(get()) }
+        scoped { GetFavoriteMovie(get()) }
     }
 
     scope(named<DetailActivity>()) {

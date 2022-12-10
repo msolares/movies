@@ -4,11 +4,12 @@ import androidx.lifecycle.*
 import com.marcos.domain.Movie
 import com.marcos.movies.ui.common.ScopedViewModel
 import com.marcos.usescases.FindMovieByName
+import com.marcos.usescases.GetFavoriteMovie
 import com.marcos.usescases.GetPopularMovies
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val getPopularMovies: GetPopularMovies, private val findMoviesByName: FindMovieByName, uiDispatcher: CoroutineDispatcher) : ScopedViewModel(uiDispatcher) {
+class MainViewModel(private val getPopularMovies: GetPopularMovies, private val findMoviesByName: FindMovieByName, uiDispatcher: CoroutineDispatcher, private val getFavoriteMovie: GetFavoriteMovie) : ScopedViewModel(uiDispatcher) {
 
 
     private val _model = MutableLiveData<UiModel>()
@@ -47,6 +48,15 @@ class MainViewModel(private val getPopularMovies: GetPopularMovies, private val 
     fun onSearch(query: String) {
         launch {
             _model.value = UiModel.Content(findMoviesByName.invoke(query))
+        }
+    }
+
+    fun clickedFavorite (favorite: Boolean){
+        launch {
+            if (favorite)
+                _model.value = UiModel.Content(getFavoriteMovie.invoke())
+            else
+                _model.value = UiModel.Content(getPopularMovies.invoke())
         }
     }
 

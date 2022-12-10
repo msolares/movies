@@ -18,6 +18,10 @@ class MoviesRepository(
         return localDataSource.getPopularMovies()
     }
 
+    suspend fun getFavoritesMovies(): List<Movie>{
+        return localDataSource.getFavoritesMovies()
+    }
+
     suspend fun getFindByNameMovies(name: String): List<Movie> {
         if (localDataSource.isEmpty()) {
             val movies = remoteDataSource.getFindMoviesByName(name, apiKey, regionRepository.findLastRegion())
