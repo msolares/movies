@@ -2,7 +2,7 @@ package com.marcos.usecases
 
 import com.marcos.data.repository.MoviesRepository
 import com.marcos.testshared.mockedMovie
-import com.marcos.usescases.GetPopularMovies
+import com.marcos.usescases.GetFavoriteMovie
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
@@ -14,28 +14,30 @@ import org.mockito.kotlin.whenever
 
 
 @RunWith(MockitoJUnitRunner::class)
-class GetPopularMoviesTest {
+class GetFavoriteMovieTest {
 
     @Mock
     lateinit var moviesRepository: MoviesRepository
-
-    lateinit var getPopularMovies: GetPopularMovies
+    lateinit var getFavoriteMovie: GetFavoriteMovie
 
     @Before
-    fun setUp() {
-        getPopularMovies = GetPopularMovies(moviesRepository)
+    fun setUp(){
+        getFavoriteMovie = GetFavoriteMovie(moviesRepository)
     }
 
     @Test
-    fun `invoke calls movies repository`() {
+    fun `invoke calls favorite movies repository` (){
         runBlocking {
 
-            val movies = listOf(mockedMovie.copy(id = 1))
-            whenever(moviesRepository.getPopularMovies()).thenReturn(movies)
+            val movies = listOf(mockedMovie.copy(favorite = true))
+            whenever(moviesRepository.getFavoritesMovies()).thenReturn(movies)
 
-            val result = getPopularMovies.invoke()
+            val result = getFavoriteMovie.invoke()
 
             Assert.assertEquals(movies, result)
         }
     }
+
+
+
 }

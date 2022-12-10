@@ -5,6 +5,7 @@ import androidx.lifecycle.Observer
 import com.marcos.testshared.mockedMovie
 import com.marcos.usescases.FindMovieByName
 import com.marcos.usescases.GetPopularMovies
+import com.marcos.usescases.GetFavoriteMovie
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -27,6 +28,9 @@ class MainViewModelTest {
     lateinit var getPopularMovies: GetPopularMovies
 
     @Mock
+    lateinit var getFavoriteMovie: GetFavoriteMovie
+
+    @Mock
     lateinit var findMoviesByName: FindMovieByName
 
     @Mock
@@ -36,7 +40,7 @@ class MainViewModelTest {
 
     @Before
     fun setUp() {
-        vm = MainViewModel(getPopularMovies, findMoviesByName, Dispatchers.Unconfined)
+        vm = MainViewModel(getPopularMovies,  findMoviesByName,  Dispatchers.Unconfined, getFavoriteMovie)
     }
 
     @Test
@@ -67,6 +71,21 @@ class MainViewModelTest {
         runBlocking {
             val movies = listOf(mockedMovie.copy(id = 1))
             whenever(getPopularMovies.invoke()).thenReturn(movies)
+
+            vm.model.observeForever(observer)
+
+            vm.onCoarsePermissionRequested()
+
+            verify(observer).onChanged(MainViewModel.UiModel.Content(movies))
+        }
+    }
+
+    @Test
+    fun `after requesting the permission, getFavoritesMovies is called`() {
+
+        runBlocking {
+            val movies = listOf(mockedMovie.copy(favorite = true))
+            whenever(getFavoriteMovie.invoke()).thenReturn(movies)
 
             vm.model.observeForever(observer)
 
