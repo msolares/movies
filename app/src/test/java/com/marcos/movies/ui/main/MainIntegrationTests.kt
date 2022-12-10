@@ -8,6 +8,8 @@ import com.marcos.movies.ui.FakeLocalDataSource
 import com.marcos.movies.ui.defaultFakeMovies
 import com.marcos.movies.ui.initMockedDi
 import com.marcos.testshared.mockedMovie
+import com.marcos.usescases.FindMovieByName
+import com.marcos.usescases.GetFavoriteMovie
 import com.marcos.usescases.GetPopularMovies
 import org.junit.Before
 import org.junit.Rule
@@ -33,8 +35,10 @@ class MainIntegrationTests {
     @Before
     fun setUp() {
         val vmModule = module {
-            factory { MainViewModel(get(), get(), get()) }
+            factory { MainViewModel(get(), get(), get(), get()) }
             factory { GetPopularMovies(get()) }
+            factory { FindMovieByName(get()) }
+            factory { GetFavoriteMovie(get()) }
         }
         initMockedDi(vmModule)
         vm = get()

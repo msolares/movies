@@ -29,6 +29,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_favorite_off"
         app:layout_anchorGravity="bottom|end"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
