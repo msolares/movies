@@ -50,9 +50,6 @@ class MainActivity : ScopeActivity(), SearchView.OnQueryTextListener {
     }
 
     private fun updateUi(model: MainViewModel.UiModel) {
-
-//        binding.progress.visibility = if (model is MainViewModel.UiModel.Loading) View.VISIBLE else View.GONE
-
         when (model) {
             is MainViewModel.UiModel.Content -> adapter.movies = model.movies
             is MainViewModel.UiModel.Navigation -> startActivity<DetailActivity> {
@@ -63,6 +60,4 @@ class MainActivity : ScopeActivity(), SearchView.OnQueryTextListener {
             }
         }
     }
-
-
 }

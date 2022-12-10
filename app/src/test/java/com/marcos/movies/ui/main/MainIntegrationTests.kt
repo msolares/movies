@@ -9,7 +9,6 @@ import com.marcos.movies.ui.defaultFakeMovies
 import com.marcos.movies.ui.initMockedDi
 import com.marcos.testshared.mockedMovie
 import com.marcos.usescases.GetPopularMovies
-
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,7 +18,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.verify
 import org.koin.test.get
-
 
 @RunWith(MockitoJUnitRunner::class)
 class MainIntegrationTests {
@@ -35,10 +33,9 @@ class MainIntegrationTests {
     @Before
     fun setUp() {
         val vmModule = module {
-            factory { MainViewModel(get(), get()) }
+            factory { MainViewModel(get(), get(), get()) }
             factory { GetPopularMovies(get()) }
         }
-
         initMockedDi(vmModule)
         vm = get()
     }
@@ -46,9 +43,7 @@ class MainIntegrationTests {
     @Test
     fun `data is loaded from server when local source is empty`() {
         vm.model.observeForever(observer)
-
         vm.onCoarsePermissionRequested()
-
         verify(observer).onChanged(MainViewModel.UiModel.Content(defaultFakeMovies))
     }
 
@@ -58,10 +53,7 @@ class MainIntegrationTests {
         val localDataSource = get<LocalDataSource>() as FakeLocalDataSource
         localDataSource.movies = fakeLocalMovies
         vm.model.observeForever(observer)
-
         vm.onCoarsePermissionRequested()
-
         verify(observer).onChanged(MainViewModel.UiModel.Content(fakeLocalMovies))
     }
-
 }

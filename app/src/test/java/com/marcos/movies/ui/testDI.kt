@@ -48,7 +48,7 @@ class FakeLocalDataSource : LocalDataSource {
 
     override suspend fun findById(id: Int): Movie = movies.first { it.id == id }
 
-    override suspend fun findByName(name: String): Movie = movies.first {it.title == "name"}
+    override suspend fun findByName(name: String): List<Movie> = movies
 
     override suspend fun update(movie: Movie) {
         movies = movies.filterNot { it.id == movie.id } + movie

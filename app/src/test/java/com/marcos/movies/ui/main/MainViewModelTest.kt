@@ -3,6 +3,7 @@ package com.marcos.movies.ui.main
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.marcos.testshared.mockedMovie
+import com.marcos.usescases.FindMovieByName
 import com.marcos.usescases.GetPopularMovies
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -26,13 +27,16 @@ class MainViewModelTest {
     lateinit var getPopularMovies: GetPopularMovies
 
     @Mock
+    lateinit var findMoviesByName: FindMovieByName
+
+    @Mock
     lateinit var observer: Observer<MainViewModel.UiModel>
 
     private lateinit var vm: MainViewModel
 
     @Before
     fun setUp() {
-        vm = MainViewModel(getPopularMovies, Dispatchers.Unconfined)
+        vm = MainViewModel(getPopularMovies, findMoviesByName, Dispatchers.Unconfined)
     }
 
     @Test
@@ -62,6 +66,21 @@ class MainViewModelTest {
 
         runBlocking {
             val movies = listOf(mockedMovie.copy(id = 1))
+            whenever(getPopularMovies.invoke()).thenReturn(movies)
+
+            vm.model.observeForever(observer)
+
+            vm.onCoarsePermissionRequested()
+
+            verify(observer).onChanged(MainViewModel.UiModel.Content(movies))
+        }
+    }
+
+    @Test
+    fun `after requesting the permission, findMoviesByName is called`(nameMovie: String) {
+
+        runBlocking {
+            val movies = listOf(mockedMovie.copy(title = nameMovie))
             whenever(getPopularMovies.invoke()).thenReturn(movies)
 
             vm.model.observeForever(observer)

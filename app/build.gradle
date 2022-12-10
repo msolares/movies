@@ -43,6 +43,7 @@ dependencies {
     implementation androidLibs.values()
     implementation kotlinLibs.values()
     implementation libs.values()
+    implementation 'androidx.test:rules:1.4.0'
     kapt androidKaptLibs.values()
 
     testImplementation testLibs.values()
